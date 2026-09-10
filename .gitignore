@@ -1,10 +1,5 @@
-# ============================================================
-# .gitignore — Projet Bibliotheque (backend + frontend + database)
-# A placer a la RACINE du depot (a cote de database/, backend/, frontend/)
-# ============================================================
-
-# ---------- Backend Node.js ----------
-node_modules/           # dependances installees par npm, jamais versionnees (trop volumineux)
+node_modules/
+# dependances installees par npm, jamais versionnees (trop volumineux)
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -46,4 +41,4 @@ desktop.ini               # Windows
 # ---------- Divers ----------
 *.tmp
 *.bak
-coverage/                 # rapports de tests si tu en ajoutes plus tard
+coverage/                 # rapports de tests si tu en ajoutes plus t

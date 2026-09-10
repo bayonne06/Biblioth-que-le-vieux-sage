@@ -29,6 +29,7 @@ create table emprunts{
   id_livres integer references livres(id) on delete cascade, --de même est supprimer
   date_emprunt date not null default current_date, -- la date de l'emprunt du livre = par default la date d'aujourd'hui
   date_retour_prevue date not null, --date à laquelle le livre doit revenir
-  date_retour_reelle date --reste null tant que le livre n'est pas rendu
+  date_retour_reelle date, --reste null tant que le livre n'est pas rendu
+  constraint emprunt_unique_livre_encours unique (id_livres,date_retour_reelle)
   };
 
