@@ -3,7 +3,7 @@ const pool= require('../config/db');
 exports.liste= async (req,res,next)=>{
 try {
 	  //Nombre de livres
-  const totalLivres=await pool.query(`SELECT COUNT(*) FROM livres`);
+  const totalLivres=await pool.query(`SELECT COUNT(*)::int AS total FROM livres`);
   const totalAdherents=await pool.query(`SELECT COUNT(*) FROM adherents`);
   //Nombre d'emprunts encours
   const totalEmpruntEncours=await pool.query(`SELECT COUNT(*) FROM emprunts WHERE date_retour_reelle IS NULL`);
@@ -31,7 +31,7 @@ try {
  `);
 
   res.json({
-    totalLivres:parseInt(totalLivres.rows[0].count),
+    totalLivres:totalLivres.rows[0].total,
  totalAdherents:parseInt(totalAdherents.rows[0].count),
 totalEmpruntEncours:parseInt(totalEmpruntEncours.rows[0].count),
     totalEmpruntEnRetards: parseInt(totalEmpruntEnRetards.rows[0].count),

@@ -60,7 +60,7 @@ exports.historique= async (req, res, next)=>{
   try {
 	const {id}= req.params;
     const result = await pool.query(
-      `SELECT e.id, l.titre, e.date_emprunt, e.date_retour_prevu, e.date_retour_prevenu FROM emprunt e JOIN livres  l ON l.id =e.id_livres WHERE e.id_adherent = $1 ORDER BY e.date_emprunt DESC`,[id]);
+      `SELECT e.id, l.titre, e.date_emprunt, e.date_retour_prevue, e.date_retour_reelle FROM emprunts e JOIN livres  l ON l.id =e.id_livres WHERE e.id_adherent = $1 ORDER BY e.date_emprunt DESC`,[id]);
   res.json(result.rows);  
 } catch (err) {
 next(err);

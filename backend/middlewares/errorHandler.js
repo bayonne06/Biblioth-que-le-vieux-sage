@@ -5,6 +5,6 @@ module.exports= (req,res,next)=>{
 
   const status= err.status || 500;
   res.status(status).json({
-    erreur: err.message || "erreur serveur",
+    erreur: err.message || "erreur serveur Bibliothèque",
   });
 };

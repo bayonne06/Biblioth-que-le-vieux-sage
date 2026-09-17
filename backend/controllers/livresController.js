@@ -1,19 +1,21 @@
 const pool = require('../config/db.js');
 
 
+
+
 //lister les livres avec le nom de l'auteur et filtre plus pagination
 exports.liste= async (req,res,next)=>{
   //par defaut si l'url ne contient pas de paramètre
   try {
-	const {recherche='',page=1,limite=10,disponible,auteur_id}=req.query;
-  const offset= (page-1)*limite;//saut de ligne avant la page voulu
+    const {recherche='',page=1,limite=10,disponible,auteur_id}=req.query;
+    const offset= (page-1)*limite;//saut de ligne avant la page voulu
     const searchTerm = `%${recherche}%`;
     let conditions = [];
     let params = [];
     let paramIndex = 1;
     //construction dynamique des conditions where
-    
-  if (search) {
+
+    if (recherche) {
         conditions.push(`(l.titre ILIKE $${paramIndex} OR a.nom ILIKE $${paramIndex})`);
         params.push(searchTerm);
         paramIndex++;
@@ -34,39 +36,39 @@ exports.liste= async (req,res,next)=>{
 
     const query = `
         SELECT l.*, a.nom AS auteur_nom
-        FROM livre l
-        JOIN auteur a ON l.auteur_id = a.id
+        FROM livres l
+        JOIN auteurs a ON l.auteur_id = a.id
         ${whereClause}
         ORDER BY l.titre
         LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
     `;
     const countQuery = `
         SELECT COUNT(*) AS total
-        FROM livre l
-        JOIN auteur a ON l.auteur_id = a.id
+        FROM livres l
+        JOIN auteurs a ON l.auteur_id = a.id
         ${whereClause}
     `;
 
-    const queryParams = [...params, limit, offset];
-    try {
-        const [rowsResult, countResult] = await Promise.all([
-            pool.query(query, queryParams),
-            pool.query(countQuery, params)
-        ]);
+    const queryParams = [...params, limite, offset];
 
-        const total = parseInt(countResult.rows[0].total);
-        res.json({
-            data: rowsResult.rows,
-            pagination: {
-                page: parseInt(page),
-                limit: parseInt(limit),
-                total,
-                totalPages: Math.ceil(total / limit)
-            }
-  });
-} catch (err) {
-	next(err);
-}
+    const [rowsResult, countResult] = await Promise.all([
+        pool.query(query, queryParams),
+        pool.query(countQuery, params)
+    ]);
+
+    const total = parseInt(countResult.rows[0].total);
+    res.json({
+        data: rowsResult.rows,
+        pagination: {
+            page: parseInt(page),
+            limite: parseInt(limite),
+            total,
+            totalPages: Math.ceil(total / limite)
+        }
+    });
+  } catch (err) {
+    next(err);
+  }
 }
 
 exports.creer= async (req,res,next)=>{
@@ -126,3 +128,4 @@ exports.supprimer= async (req,res,next)=>{
 	next(err);
 }
 }
+

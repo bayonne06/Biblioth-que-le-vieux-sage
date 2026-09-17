@@ -39,7 +39,7 @@ exports.creer= async (req,res,next)=>{
 }
 
         const result = await client.query(
-            'INSERT INTO reservation (id_livres, id_livres) VALUES ($1, $2) RETURNING *',
+            'INSERT INTO reservation (id_adherent, id_livres) VALUES ($1, $2) RETURNING *',
             [id_adherent, id_livres]
         );
 
@@ -61,7 +61,7 @@ exports.annuler = async (req, res, next) => {
     try {
         const result = await pool.query(
             'UPDATE reservation SET statut = $1 WHERE id = $2 AND statut = $3 RETURNING *',
-            ['annulee', id, 'en_attente']
+            ['annulee', id, 'en attente']
         );
         if (result.rows.length === 0) {
             const err = new Error('Réservation non trouvée ou déjà traitée');
@@ -81,7 +81,7 @@ exports.parLivre = async (req, res, next) => {
             `SELECT r.*, a.nom AS adherent_nom
              FROM reservation r
              JOIN adherents a ON r.id_adherent = a.id
-             WHERE r.id_livres = $1 AND r.statut = 'en_attente'
+             WHERE r.id_livres = $1 AND r.statut = 'en attente'
              ORDER BY r.date_reservation`,
             [id_livres]
         );
@@ -98,7 +98,7 @@ exports.parAdherent = async (req, res, next) => {
             `SELECT r.*, l.titre AS livre_titre
              FROM reservation r
              JOIN livres l ON r.id_livres = l.id
-             WHERE r.id_adherent = $1 AND r.statut = 'en_attente'
+             WHERE r.id_adherent = $1 AND r.statut = 'en attente'
              ORDER BY r.date_reservation`,
             [id_adherent]
         );
