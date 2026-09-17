@@ -24,6 +24,6 @@ app.use(errorHandler); // toujours en dernier pour capter toutes les erreurs
 
 const PORT = process.env.PORT || 3000; // port lu depuis le fichier .env
 
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
   console.log(`le serveur demarre sur le port ${PORT}`);
 });
