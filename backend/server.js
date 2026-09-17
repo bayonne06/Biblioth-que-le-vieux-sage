@@ -16,15 +16,8 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-// Route de test
-app.get('/', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT NOW()');
-    res.json({ message: 'Base connectée !', heure: result.rows[0].now });
-  } catch (err) {
-    res.status(500).json({ erreur: err.message });
-  }
-});
+
+
 
 
 
