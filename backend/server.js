@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const { Pool } = require('pg');
 
 const logger = require('./middlewares/logger'); // le middlewares pour la journalisation
 const errorHandler = require('./middlewares/errorHandler'); //middlewares pour la gestion d'erreurs
@@ -8,6 +9,24 @@ const errorHandler = require('./middlewares/errorHandler'); //middlewares pour l
 app.use(express.json()); //pour lire le json envoyé par la requête >> req.body
 
 app.use(logger); //active le logger sur toutes les requêtes
+
+// Connexion à la base PostgreSQL sur Render
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+// Route de test
+app.get('/', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json({ message: 'Base connectée !', heure: result.rows[0].now });
+  } catch (err) {
+    res.status(500).json({ erreur: err.message });
+  }
+});
+
+
 
 //branche les routes adherents
 app.use('/api/adherents', require('./routes/adherents'));
