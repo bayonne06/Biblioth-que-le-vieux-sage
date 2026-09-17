@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bibliothèque Le Vieux Sage</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="entete">
+  <div class="entete-ligne">
+    <h1>Bibliothèque Le Vieux Sage</h1>
+    <button id="bouton-theme" class="bouton-theme" title="Changer de thème" aria-label="Changer de thème">🌙</button>
+  </div>
+  <nav class="onglets">
+    <button class="onglet actif" data-section="tableau-de-bord">Tableau de bord</button>
+    <button class="onglet" data-section="livres">Livres</button>
+    <button class="onglet" data-section="auteurs">Auteurs</button>
+    <button class="onglet" data-section="adherents">Adhérents</button>
+    <button class="onglet" data-section="emprunts">Emprunts</button>
+    <button class="onglet" data-section="reservations">Réservations</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ================= TABLEAU DE BORD ================= -->
+  <section id="tableau-de-bord" class="section">
+    <h2>Tableau de bord</h2>
+    <div class="grille-stats" id="grille-stats">
+      <p class="chargement">Chargement des statistiques…</p>
+    </div>
+  </section>
+
+  <!-- ================= LIVRES ================= -->
+  <section id="livres" class="section masquee">
+    <h2>Livres</h2>
+
+    <form id="form-livre" class="formulaire">
+      <h3 id="livre-titre-formulaire">Ajouter un livre</h3>
+      <label>Titre
+        <input type="text" id="livre-titre" required>
+      </label>
+      <label>Auteur
+        <select id="livre-auteur" required></select>
+      </label>
+      <label>Année de publication
+        <input type="number" id="livre-annee" min="0" max="2100">
+      </label>
+      <button type="submit" id="livre-submit-button">Ajouter le livre</button>
+      <button type="button" id="livre-annuler-edition" class="lien-fermer masque">Annuler</button>
+      <p class="message-erreur" id="livre-erreur"></p>
+    </form>
+
+    <div class="barre-recherche">
+  <input type="search" id="livre-recherche" placeholder="Chercher par titre ou auteur…">
+  <select id="livre-filtre-disponible">
+    <option value="">Tous les livres</option>
+    <option value="true">Disponibles uniquement</option>
+    <option value="false">Empruntés uniquement</option>
+  </select>
+    </div>
+
+    <table class="table-donnees">
+      <thead>
+        <tr><th>Titre</th><th>Auteur</th><th>Année</th><th>Statut</th></tr>
+      </thead>
+      <tbody id="livres-corps">
+        <tr><td colspan="4" class="chargement">Chargement…</td></tr>
+      </tbody>
+    </table>
+
+    <div class="pagination" id="livres-pagination"></div>
+  </section>
+
+  <!-- ================= AUTEURS ================= -->
+  <section id="auteurs" class="section masquee">
+    <h2>Auteurs</h2>
+
+    <form id="form-auteur" class="formulaire">
+      <h3 id="auteur-titre-formulaire">Ajouter un auteur</h3>
+      <label>Nom
+        <input type="text" id="auteur-nom" required>
+      </label>
+      <label>Nationalité
+        <input type="text" id="auteur-nationalite">
+      </label>
+      <button type="submit" id="auteur-submit-bouton">Ajouter l'auteur</button>
+      <button type="button" id="auteur-annuler-edition" class="lien-fermer masque">Annuler</button>
+      <p class="message-erreur" id="auteur-erreur"></p>
+    </form>
+
+    <table class="table-donnees">
+      <thead><tr><th>Nom</th><th>Nationalité</th></tr></thead>
+      <tbody id="auteurs-corps">
+        <tr><td colspan="2" class="chargement">Chargement…</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= ADHERENTS ================= -->
+  <section id="adherents" class="section masquee">
+    <h2>Adhérents</h2>
+
+    <form id="form-adherent" class="formulaire">
+  <h3 id="adherent-titre-formulaire">Inscrire un adhérent</h3>
+  <label>Nom
+    <input type="text" id="adherent-nom" required>
+  </label>
+  <label>Contact
+    <input type="text" id="adherent-contact" placeholder="email ou téléphone">
+  </label>
+  <button type="submit" id="adherent-bouton-submit">Inscrire l'adhérent</button>
+  <button type="button" id="adherent-annuler-edition" class="lien-fermer masque">Annuler</button>
+  <p class="message-erreur" id="adherent-erreur"></p>
+    </form>
+
+    <table class="table-donnees">
+      <thead><tr><th>Nom</th><th>Contact</th><th>Historique</th></tr></thead>
+      <tbody id="adherents-corps">
+        <tr><td colspan="3" class="chargement">Chargement…</td></tr>
+      </tbody>
+    </table>
+
+    <div id="historique-panneau" class="panneau masque">
+      <h3 id="historique-titre">Historique</h3>
+      <button id="historique-fermer" class="lien-fermer">Fermer</button>
+      <table class="table-donnees">
+        <thead><tr><th>Livre</th><th>Emprunté le</th><th>Retour prévu</th><th>Retour réel</th></tr></thead>
+        <tbody id="historique-corps"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= EMPRUNTS ================= -->
+  <section id="emprunts" class="section masquee">
+    <h2>Emprunts</h2>
+
+    <form id="form-emprunt" class="formulaire">
+      <h3>Enregistrer un emprunt</h3>
+      <label>Adhérent
+        <select id="emprunt-adherent" class="select-adherents" required></select>
+      </label>
+      <label>Livre disponible
+        <select id="emprunt-livre" required></select>
+      </label>
+      <label>Date de retour prévue
+        <input type="date" id="emprunt-date" required>
+      </label>
+      <button type="submit">Enregistrer l'emprunt</button>
+      <p class="message-erreur" id="emprunt-erreur"></p>
+    </form>
+
+    <h3>Emprunts en cours</h3>
+    <p class="legende"><span class="pastille pastille-retard"></span> en retard &nbsp;
+       <span class="pastille pastille-cours"></span> dans les temps</p>
+    <table class="table-donnees">
+      <thead>
+        <tr><th>Adhérent</th><th>Livre</th><th>Retour prévu</th><th>Statut</th><th></th></tr>
+      </thead>
+      <tbody id="emprunts-corps">
+        <tr><td colspan="5" class="chargement">Chargement…</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= RESERVATIONS ================= -->
+  <section id="reservations" class="section masquee">
+    <h2>Réservations</h2>
+    <p class="legende">Un livre déjà emprunté peut être réservé : l'adhérent suivant dans la file
+      recevra automatiquement l'emprunt dès que le livre sera rendu.</p>
+
+    <form id="form-reservation" class="formulaire">
+      <h3>Réserver un livre emprunté</h3>
+      <label>Adhérent
+        <select id="reservation-adherent" class="select-adherents" required></select>
+      </label>
+      <label>Livre (déjà emprunté)
+        <select id="reservation-livre" required></select>
+      </label>
+      <button type="submit">Réserver</button>
+      <p class="message-erreur" id="reservation-erreur"></p>
+    </form>
+
+    <h3>Consulter la file d'attente d'un livre</h3>
+    <div class="barre-recherche">
+      <select id="reservation-filtre-livre"></select>
+    </div>
+    <table class="table-donnees">
+      <thead><tr><th>Adhérent</th><th>Réservé le</th><th></th></tr></thead>
+      <tbody id="reservations-corps">
+        <tr><td colspan="3">Choisis un livre ci-dessus pour voir la file d'attente.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+<div id="toasts" class="toasts"></div>
+  <!-- ================= MODALE DE CONFIRMATION ================= -->
+<div id="modale-confirmation" class="modale-fond masque" role="dialog" aria-modal="true" aria-labelledby="modale-message">
+  <div class="modale-boite">
+    <p id="modale-message" class="modale-message">Voulez-vous supprimer ?</p>
+    <div class="modale-actions">
+      <button type="button" id="modale-non" class="modale-btn modale-btn-non">Non</button>
+      <button type="button" id="modale-oui" class="modale-btn modale-btn-oui">Oui</button>
+    </div>
+  </div>
+</div>
+
+<div id="toasts" class="toasts"></div>
+<script src="js/api.js" defer></script>
+<script src="js/utils.js" defer></script>
+<script src="js/theme.js" defer></script>
+<script src="js/navigation.js" defer></script>
+  <script src="/js/modale.js" defer type="text/javascript" charset="utf-8"></script>
+  <script src="/js/toasts.js"  defer></script>
+<script src="js/auteurs.js" defer></script>
+<script src="js/adherents.js" defer></script>
+<script src="js/livres.js" defer></script>
+<script src="js/emprunts.js" defer></script>
+<script src="js/reservations.js" defer></script>
+<script src="js/statistiques.js" defer></script>
+</body>
+</html>
